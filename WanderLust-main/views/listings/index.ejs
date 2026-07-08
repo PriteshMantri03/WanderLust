@@ -1,0 +1,378 @@
+<% layout("/layouts/boilerplate") -%>
+
+    <style>
+        /* --- General Filter Container --- */
+        #filters {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        /* --- Individual Filter Item --- */
+        .filter {
+            text-align: center;
+            margin-right: 2rem;
+            margin-top: 2rem;
+            opacity: 0.7;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 80px;
+            /* Ensure a minimum width for touch targets */
+        }
+
+        .filter:hover {
+            opacity: 1;
+            cursor: pointer;
+            color: rgb(217, 24, 24);
+        }
+
+        .filter-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .filter i {
+            font-size: 1.2rem;
+            /* Make icons slightly larger */
+            margin-bottom: 0.5rem;
+        }
+
+        .filter p {
+            font-size: 0.8rem;
+            /* Keep text compact */
+            margin-bottom: 0;
+        }
+
+        /* --- Controls Container (Right Side) --- */
+        .tax-sort-control {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+            /* Pushes sort/tax to the right */
+        }
+
+        /* --- Sort Dropdown Styling --- */
+        .sort-group {
+            margin-left: 1.5rem;
+            height: 3rem;
+            min-width: 250px;
+        }
+
+        .sort-by {
+            border: 1px solid rgb(217, 24, 24) !important;
+            background-color: transparent;
+        }
+
+        /* Rounded corners for the "Sort By" label */
+        .input-group-text.sort-by {
+            border-top-left-radius: 1rem !important;
+            border-bottom-left-radius: 1rem !important;
+            border-right: none;
+        }
+
+        /* Rounded corners for the Dropdown */
+        .form-select.sort-by {
+            border-top-right-radius: 1rem !important;
+            border-bottom-right-radius: 1rem !important;
+            border-left: none;
+            cursor: pointer;
+        }
+
+        .form-select.sort-by:focus {
+            box-shadow: none;
+            border-color: rgb(217, 24, 24) !important;
+        }
+
+        /* --- Tax Toggle Styling --- */
+        .tax-toggle {
+            border: 1px solid rgb(217, 24, 24);
+            border-radius: 1rem;
+            height: 3rem;
+            padding: 1rem;
+            margin-left: 1.5rem;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            transition: 0.3s;
+        }
+
+        .tax-toggle:hover {
+            background-color: rgb(217, 24, 24);
+            color: white;
+            cursor: pointer;
+        }
+
+        /* --- Mobile Toggle Button --- */
+        .filter-toggle-btn {
+            display: none;
+            /* Hidden on Desktop */
+            border: 1px solid rgb(217, 24, 24);
+            border-radius: 1rem;
+            height: 3rem;
+            color: black;
+            width: 100%;
+            /* Full width on mobile */
+            background-color: white;
+            /* Explicit background */
+        }
+
+        .filter-toggle-btn:hover {
+            background-color: rgb(217, 24, 24);
+            color: white;
+        }
+
+        /* --- Mobile Responsive Rules --- */
+        @media (max-width: 992px) {
+            #filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            /* --- UPDATED: Mobile Filter Grid Layout --- */
+            #filters-collapse {
+                display: none;
+                /* Use Grid layout for cleaner alignment on mobile */
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+                /* Auto-fit columns */
+                gap: 10px;
+                /* Space between grid items */
+                width: 100%;
+                margin-bottom: 1.5rem;
+                padding: 10px 0;
+            }
+
+            /* Override the flex display when hidden */
+            #filters-collapse:not(.show) {
+                display: none;
+            }
+
+            /* When shown, ensure it uses grid */
+            #filters-collapse.show {
+                display: grid;
+            }
+
+            /* Adjust individual filter items for mobile grid */
+            .filter {
+                margin: 0;
+                /* Remove old margins */
+                margin-top: 1rem;
+                width: 100%;
+                /* Take full width of grid cell */
+            }
+
+            /* Stack Controls on Mobile */
+            .tax-sort-control {
+                margin-left: 0;
+                flex-direction: column;
+                gap: 1rem;
+                width: 100%;
+            }
+
+            .tax-toggle,
+            .sort-group {
+                margin-left: 0;
+                width: 100%;
+                justify-content: center;
+                min-width: unset;
+                /* Allow shrinking */
+            }
+
+            /* Show Toggle Button on Mobile */
+            .filter-toggle-btn {
+                display: block;
+                margin-bottom: 1rem;
+            }
+        }
+
+        /* Desktop: Always show filters */
+        @media (min-width: 993px) {
+            #filters-collapse {
+                display: flex !important;
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+
+    <div class="container-fluid mt-3">
+        <div id="filters">
+
+            <button class="btn filter-toggle-btn" type="button" data-bs-toggle="collapse"
+                data-bs-target="#filters-collapse" aria-expanded="false" aria-controls="filters-collapse">
+                <i class="fa-solid fa-sliders me-2"></i> Show Filters
+            </button>
+
+            <div id="filters-collapse" class="collapse">
+                <a href="/listings?category=whole_place" class="filter-link">
+                    <div class="filter">
+                        <div><i class="fa-solid fa-house"></i></div>
+                        <p>Whole Place</p>
+                    </div>
+                </a>
+                <a href="/listings?category=cozy_rooms" class="filter-link">
+                    <div class="filter">
+                        <div><i class="fa-solid fa-bed"></i></div>
+                        <p>Cozy Rooms</p>
+                    </div>
+                </a>
+                <a href="/listings?category=urban_stays" class="filter-link">
+                    <div class="filter">
+                        <div><i class="fa-solid fa-city"></i></div>
+                        <p>Urban Stays</p>
+                    </div>
+                </a>
+                <a href="/listings?category=beach_vibes" class="filter-link">
+                    <div class="filter">
+                        <div><i class="fa-solid fa-umbrella-beach"></i></div>
+                        <p>Beach Vibes</p>
+                    </div>
+                </a>
+                <a href="/listings?category=mountain_escapes" class="filter-link">
+                    <div class="filter">
+                        <div><i class="fa-solid fa-mountain"></i></div>
+                        <p>Mountain Escapes</p>
+                    </div>
+                </a>
+                <a href="/listings?category=nature_nooks" class="filter-link">
+                    <div class="filter">
+                        <div><i class="fa-solid fa-tree"></i></div>
+                        <p>Nature Nooks</p>
+                    </div>
+                </a>
+                <a href="/listings?category=poolside_stays" class="filter-link">
+                    <div class="filter">
+                        <div><i class="fa-solid fa-person-swimming"></i></div>
+                        <p>Poolside Stays</p>
+                    </div>
+                </a>
+                <a href="/listings?category=eco_retreats" class="filter-link">
+                    <div class="filter">
+                        <div><i class="fa-solid fa-campground"></i></div>
+                        <p>Eco Retreats</p>
+                    </div>
+                </a>
+                <a href="/listings?category=family_favs" class="filter-link">
+                    <div class="filter">
+                        <div><i class="fa-solid fa-people-roof"></i></div>
+                        <p>Family Favs</p>
+                    </div>
+                </a>
+                <a href="/listings?category=other_stays" class="filter-link">
+                    <div class="filter">
+                        <div><i class="fa-solid fa-layer-group"></i></div>
+                        <p>Other Stays</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="tax-sort-control">
+
+                <div class="input-group sort-group">
+                    <label class="input-group-text bg-transparent sort-by" for="sortSelect">Sort By</label>
+                    <select class="form-select sort-by" id="sortSelect" name="sort">
+                        <option value="date_old" selected>Date: Oldest to Newest</option>
+                        <option value="date_new">Date: Newest to Oldest</option>
+                        <option value="price_high">Price: High to Low</option>
+                        <option value="price_low">Price: Low to High</option>
+                    </select>
+                </div>
+
+                <div class="tax-toggle">
+                    <div class="form-check-reverse form-switch">
+                        <input type="checkbox" class="form-check-input" role="switch" id="flexSwitchCheckDefault">
+                        <label for="flexSwitchCheckDefault" class="form-check-label">Total after taxes</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+        <% if(allListings.length===0) { %>
+            <div class="container">
+                <div class="row min-vh-50 d-flex justify-content-center align-items-center text-center mt-5">
+                    <div class="col-12">
+                        <h3>No listings found in this category!</h3>
+                        <a href="/listings" class="btn btn-dark mt-3">View All Listings</a>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+
+                <% for(let listing of allListings) { %>
+                    <a href="/listings/<%= listing._id %>" class="listing-link">
+                        <div class="card col listing-card">
+                            <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image"
+                                style="height: 20rem">
+                            <div class="card-img-overlay"></div>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <b>
+                                        <%= listing.title %>
+                                    </b> <br>
+                                    <span class="price-before-tax">
+                                        &#8377; <%= listing.price.toLocaleString("en-IN") %> / night
+                                    </span>
+                                    <span class="price-after-tax" style="display: none;">
+                                        &#8377; <%= (listing.price + (0.18 * listing.price)).toLocaleString("en-IN") %>
+                                            / night
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                    <% } %>
+    </div>
+
+    <script>
+        // 1. Tax Switch Logic
+        const taxSwitch = document.getElementById("flexSwitchCheckDefault");
+
+        if (taxSwitch) { // Safety check to avoid null error
+            taxSwitch.addEventListener("click", () => {
+                let taxInfo = document.getElementsByClassName("price-after-tax");
+                let priceInfo = document.getElementsByClassName("price-before-tax");
+
+                for (info of taxInfo) {
+                    if (info.style.display != "inline") {
+                        info.style.display = "inline";
+                    } else {
+                        info.style.display = "none";
+                    }
+                }
+
+                for (info of priceInfo) {
+                    if (info.style.display != "none") {
+                        info.style.display = "none";
+                    } else {
+                        info.style.display = "inline";
+                    }
+                }
+            });
+        }
+
+        // 2. Sort By Logic
+        const sortSelect = document.getElementById("sortSelect");
+
+        if (sortSelect) { // Safety check to avoid null error
+            // Set the dropdown value based on current URL to keep it selected after reload
+            const urlParams = new URLSearchParams(window.location.search);
+            const currentSort = urlParams.get('sort');
+            if (currentSort) {
+                sortSelect.value = currentSort;
+            }
+
+            sortSelect.addEventListener("change", () => {
+                const selectedValue = sortSelect.value;
+                const currentUrl = new URL(window.location.href);
+
+                // Update the 'sort' query parameter
+                currentUrl.searchParams.set('sort', selectedValue);
+
+                // Reload the page with the new sort parameter
+                window.location.href = currentUrl.toString();
+            });
+        }
+    </script>
